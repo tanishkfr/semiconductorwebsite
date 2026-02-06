@@ -10,21 +10,21 @@
         theme: {
           extend: {
             colors: {
-              onyx: '#1D1D1F',       // Apple's "Almost Black"
-              paper: '#F5F5F7',      // Apple's "Light Gray" background
-              surface: '#FFFFFF',    // Pure White
-              azure: '#2997FF',      // The new "Light-ish Blue" accent
-              concrete: '#D2D2D7',   // Borders
+              onyx: '#1D1D1F',
+              paper: '#F5F5F7',
+              surface: '#FFFFFF',
+              azure: '#007AFF', // Richer Apple Blue
+              'azure-deep': '#0055B3',
+              'azure-light': '#E3F0FF',
             },
             fontFamily: {
-              sans: ['SF Pro Display', 'Inter', '-apple-system', 'system-ui', 'sans-serif'],
+              sans: ['SF Pro Display', 'Inter', 'system-ui', 'sans-serif'],
               mono: ['SF Mono', 'Menlo', 'monospace'],
             },
-            letterSpacing: {
-              tighter: '-0.03em',
-              tight: '-0.01em',
-              normal: '0em',
-            },
+            backgroundImage: {
+              'gradient-mesh': 'radial-gradient(at 0% 0%, rgba(41, 151, 255, 0.1) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(41, 151, 255, 0.05) 0px, transparent 50%)',
+              'silver-sheen': 'linear-gradient(135deg, #F5F5F7 0%, #EAEAEA 100%)',
+            }
           },
         },
       };
@@ -35,11 +35,45 @@
         background-color: #FFFFFF;
         color: #1D1D1F;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden; /* Prevent horizontal scroll */
+        overflow-x: hidden;
       }
-      /* Hide scrollbar but allow scrolling */
       .no-scrollbar::-webkit-scrollbar { display: none; }
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      /* New "Cool" Blur Class */
+      .glass-morphism {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+      }
+
+      /* Ticker Hollow Text Effect */
+      .text-stroke {
+        -webkit-text-stroke: 1px #E5E7EB; /* Light Gray Stroke */
+        color: transparent;
+      }
+      .text-stroke:hover {
+        -webkit-text-stroke: 1px #007AFF; /* Azure Stroke on Hover */
+      }
+
+      /* Scanning Animation for Hero Chip */
+      @keyframes scan {
+        0% { top: 0%; opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+      }
+      .animate-scan {
+        animation: scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      /* Mask for Ticker Fade */
+      .mask-linear-fade {
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      }
     </style>
   <script type="importmap">
 {
