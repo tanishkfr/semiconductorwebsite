@@ -53,8 +53,9 @@ const Contact: React.FC = () => {
          </div>
 
          {/* RIGHT: FORM */}
-         <div className="bg-paper rounded-3xl p-10 lg:p-12">
-            <form className="space-y-8">
+         <div className="bg-paper bg-gradient-mesh bg-opacity-30 rounded-3xl p-10 lg:p-12 relative overflow-hidden">
+            <div className="absolute inset-0 bg-white/40 pointer-events-none"></div>
+            <form className="space-y-8 relative z-10">
                <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
                      <label className="text-xs font-bold text-onyx uppercase tracking-wide">First Name</label>

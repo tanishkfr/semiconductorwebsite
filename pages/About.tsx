@@ -1,50 +1,62 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Award, TrendingUp } from 'lucide-react';
+import { Globe, Award, TrendingUp, Users, Book, Target } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
-    <div className="bg-surface pt-32 pb-20">
+    <div className="pt-40 pb-20">
        
-       {/* HERO */}
        <div className="max-w-4xl mx-auto px-6 mb-24 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
              <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-onyx mb-6">
                 The Foundry<br/>of Tomorrow.
              </h1>
-             <p className="text-xl text-gray-500 font-medium leading-relaxed">
-                We are building the substrate for the next century of computing.
-             </p>
           </motion.div>
        </div>
 
-       {/* TIMELINE (New Feature) */}
-       <div className="bg-paper py-20 px-6 mb-20 rounded-3xl mx-4 md:mx-12">
-          <div className="max-w-4xl mx-auto">
-             <h3 className="text-center text-sm font-bold text-azure uppercase tracking-widest mb-12">Our Journey</h3>
-             <div className="space-y-12 relative border-l-2 border-gray-200 ml-4 md:ml-0 md:pl-0">
+       {/* LEADERSHIP GRID */}
+       <div className="bg-onyx py-32 px-6">
+          <div className="max-w-7xl mx-auto">
+             <div className="flex items-end justify-between mb-16 border-b border-white/10 pb-8">
+                <h2 className="text-4xl font-bold text-white">Leadership</h2>
+             </div>
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {[
-                   { year: "2024", title: "Inception", desc: "Founded in Bengaluru with a vision for bio-mimetic silicon." },
-                   { year: "2025", title: "First Tapeout", desc: "Successful validation of the 14Å test chip." },
-                   { year: "2026", title: "Global Expansion", desc: "Opening of Fab 2 in Dresden and Packaging facility in Austin." }
-                ].map((item, i) => (
-                   <div key={i} className="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 items-center group">
-                      <div className="md:col-span-1 md:text-right font-bold text-2xl text-onyx">{item.year}</div>
-                      <div className="absolute left-[-5px] top-2 md:left-auto md:relative md:col-span-1 md:flex md:justify-center">
-                         <div className="w-3 h-3 bg-azure rounded-full ring-4 ring-white group-hover:scale-150 transition-transform"></div>
+                   { name: "Tanishk", role: "Founder & CEO", desc: "Ex-Intel Fellow. Pioneer of Backside Power Delivery." },
+                   { name: "Sarah Chen", role: "CTO", desc: "Lead Architect of the A-1400 Logic Cell Library." },
+                   { name: "Dr. A. Russo", role: "VP of Manufacturing", desc: "Oversees Fab 4.2 High-NA EUV operations." }
+                ].map((leader, i) => (
+                   <div key={i} className="group">
+                      <div className="aspect-[4/5] bg-gray-800 mb-6 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-500 rounded-lg">
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                         <Users className="absolute bottom-4 right-4 text-white/20 w-12 h-12" />
                       </div>
-                      <div className="md:col-span-3 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                         <h4 className="font-bold text-lg mb-1">{item.title}</h4>
-                         <p className="text-gray-500 text-sm">{item.desc}</p>
-                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-1">{leader.name}</h3>
+                      <div className="text-azure text-xs font-bold uppercase tracking-widest mb-4">{leader.role}</div>
+                      <p className="text-white/40 text-sm leading-relaxed">{leader.desc}</p>
                    </div>
                 ))}
              </div>
           </div>
        </div>
 
+       {/* COLOR BLOCK: PURPLE (Mission) */}
+       <div className="max-w-7xl mx-auto px-6 py-20">
+         <div className="bg-purple-700 text-white rounded-3xl p-16 shadow-2xl shadow-purple-900/20">
+            <div className="flex flex-col md:flex-row items-start gap-12">
+               <Target className="w-20 h-20 text-purple-300" />
+               <div>
+                  <h2 className="text-4xl font-bold mb-6">Our Mission</h2>
+                  <p className="text-xl text-purple-100 leading-relaxed max-w-2xl">
+                     To reduce the latency between human thought and digital action to zero. We are building the substrate for the post-biological intelligence era.
+                  </p>
+               </div>
+            </div>
+         </div>
+       </div>
+
        {/* STATS */}
-       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+       <div className="max-w-6xl mx-auto px-6 pt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
              { label: "Global Locations", val: "3", icon: Globe },
              { label: "Patents Granted", val: "142", icon: Award },
