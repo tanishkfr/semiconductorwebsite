@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio } from 'lucide-react';
+import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck } from 'lucide-react';
 
 interface HomeProps {
   setPage: (page: string) => void;
@@ -234,6 +234,55 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
                         ))}
                      </tbody>
                   </table>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* 5. SUPPLY CHAIN VELOCITY */}
+      <section className="py-24 px-6 md:px-20 bg-onyx text-white border-t border-white/10 relative overflow-hidden">
+         {/* Background accent */}
+         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cobalt/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+         <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex items-center gap-3 mb-16">
+               <div className="p-2 bg-cobalt/20 rounded-lg"><Timer className="text-cobalt" size={24}/></div>
+               <div>
+                 <h2 className="text-2xl font-bold">Supply Chain Velocity</h2>
+                 <p className="text-xs font-mono text-white/40 uppercase tracking-widest">End-to-End Latency Tracking</p>
+               </div>
+            </div>
+
+            <div className="relative">
+               {/* Connecting Line (Desktop) */}
+               <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-white/5 via-white/20 to-white/5 -translate-y-1/2 z-0"></div>
+
+               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
+                  {[
+                     { stage: "Raw Silicon", time: "T-48h", icon: Layers, desc: "Ingot Prep" },
+                     { stage: "Fabrication", time: "Processing", icon: Factory, desc: "Lithography" },
+                     { stage: "Packaging", time: "+12h", icon: Package, desc: "CoWoS Stack" },
+                     { stage: "Distribution", time: "+24h", icon: Truck, desc: "Logistics" },
+                  ].map((item, i) => (
+                     <div key={i} className="group">
+                        <div className="flex flex-col items-center text-center">
+                           {/* Icon Node */}
+                           <div className="w-16 h-16 bg-onyx border border-white/20 rounded-full flex items-center justify-center mb-6 relative z-10 group-hover:border-cobalt group-hover:shadow-[0_0_20px_rgba(0,71,171,0.3)] transition-all duration-300">
+                              <item.icon size={24} className="text-white/60 group-hover:text-cobalt transition-colors" />
+                              {i === 1 && (
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse border-2 border-onyx"></div>
+                              )}
+                           </div>
+                           
+                           {/* Data Card */}
+                           <div className="w-full bg-white/5 border border-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/10 transition-colors">
+                              <div className="text-2xl font-mono font-bold text-white mb-1">{item.time}</div>
+                              <div className="text-xs font-bold uppercase tracking-wider text-cobalt mb-2">{item.stage}</div>
+                              <div className="text-xs text-white/40 font-mono">{item.desc}</div>
+                           </div>
+                        </div>
+                     </div>
+                  ))}
                </div>
             </div>
          </div>
