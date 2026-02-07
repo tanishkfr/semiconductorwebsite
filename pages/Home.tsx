@@ -182,7 +182,148 @@ const GlitchHeadline = () => {
    );
 };
 
-// 2. TRUST: DEPLOYMENT SCENARIOS (Dynamic Visualization)
+// 2. NEW: ARCHITECTURAL PILLARS (Replaces Feature Deck)
+const ArchitecturalPillars = () => {
+   const [activeTab, setActiveTab] = useState(0);
+
+   const pillars = [
+      {
+         id: "01",
+         title: "High-NA Optics",
+         spec: "0.55 Numerical Aperture",
+         desc: "Pushing the physical limits of lithography. Our 0.55 NA Extreme Ultraviolet (EUV) optics print features with atomic-scale precision, enabling the 14Å node geometry.",
+         icon: Crosshair
+      },
+      {
+         id: "02",
+         title: "Backside Power",
+         spec: "PowerVia™ Delivery",
+         desc: "Decoupling signal and power networks. By moving power delivery to the back of the wafer, we eliminate interconnect bottlenecks and reduce voltage droop by >30%.",
+         icon: Zap
+      },
+      {
+         id: "03",
+         title: "RibbonFET",
+         spec: "Gate-All-Around (GAA)",
+         desc: "The evolution of FinFET. Gate-All-Around nanoribbons provide maximum channel control, reducing leakage and enabling higher drive currents at lower voltages.",
+         icon: Layers
+      }
+   ];
+
+   return (
+      <section className="py-32 px-6 md:px-20 bg-onyx text-white border-y border-white/10 relative overflow-hidden">
+         <div className="absolute inset-0 bg-grid-pattern-dark opacity-10 pointer-events-none"></div>
+         
+         <div className="max-w-7xl mx-auto relative z-10">
+            <FadeIn>
+               <div className="flex justify-between items-end mb-20">
+                  <div>
+                     <h2 className="text-4xl font-bold tracking-tight mb-2">Core Architecture</h2>
+                     <p className="text-white/40 font-mono text-xs uppercase tracking-widest">/// System Pillars</p>
+                  </div>
+                  <div className="hidden md:flex gap-4">
+                     <div className="px-4 py-2 border border-white/10 rounded-full text-xs font-mono text-cobalt bg-cobalt/10">REV 4.2</div>
+                  </div>
+               </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+               
+               {/* LEFT COLUMN: NAVIGATION */}
+               <div className="lg:col-span-4 flex flex-col gap-6">
+                  {pillars.map((pillar, index) => (
+                     <button
+                        key={index}
+                        onClick={() => setActiveTab(index)}
+                        className={`group relative flex items-center gap-6 p-6 rounded-xl transition-all duration-500 text-left ${
+                            activeTab === index ? 'bg-white/5' : 'hover:bg-white/5'
+                        }`}
+                     >
+                        {/* Active Indicator Line */}
+                        {activeTab === index && (
+                            <motion.div 
+                                layoutId="activePillarLine"
+                                className="absolute left-0 top-6 bottom-6 w-1 bg-cobalt rounded-r-full" 
+                            />
+                        )}
+
+                        {/* Numeral Box */}
+                        <div className={`w-12 h-12 shrink-0 flex items-center justify-center rounded-lg font-mono text-sm font-bold transition-all duration-300 ${
+                            activeTab === index 
+                            ? 'bg-cobalt text-white shadow-[0_0_20px_rgba(0,71,171,0.4)]' 
+                            : 'border border-white/10 text-white/40 group-hover:border-white/30 group-hover:text-white/60'
+                        }`}>
+                            {pillar.id}
+                        </div>
+
+                        {/* Label */}
+                        <div>
+                            <h3 className={`text-xl font-bold transition-colors duration-300 ${
+                                activeTab === index ? 'text-white' : 'text-white/40 group-hover:text-white/80'
+                            }`}>
+                                {pillar.title}
+                            </h3>
+                            {activeTab === index && (
+                                <motion.p 
+                                    initial={{ opacity: 0 }} 
+                                    animate={{ opacity: 1 }} 
+                                    className="text-[10px] font-mono text-cobalt mt-1 uppercase tracking-wider"
+                                >
+                                    {pillar.spec}
+                                </motion.p>
+                            )}
+                        </div>
+                     </button>
+                  ))}
+               </div>
+
+               {/* RIGHT COLUMN: DISPLAY AREA */}
+               <div className="lg:col-span-8 h-[500px] relative">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeTab}
+                            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                            exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            className="w-full h-full bg-black/40 border border-white/10 rounded-3xl p-12 flex flex-col items-center justify-center text-center relative overflow-hidden"
+                        >
+                            {/* Background Glow */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-cobalt/5 to-transparent"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-cobalt/20 blur-[100px] rounded-full"></div>
+
+                            {/* Icon */}
+                            <div className="relative mb-10">
+                                {React.createElement(pillars[activeTab].icon, {
+                                    size: 140,
+                                    strokeWidth: 0.5,
+                                    className: "text-white relative z-10 drop-shadow-[0_0_25px_rgba(0,71,171,0.6)]"
+                                })}
+                                {/* Holographic Scan Line */}
+                                <motion.div 
+                                    animate={{ top: ['0%', '100%'], opacity: [0, 1, 0] }}
+                                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                    className="absolute left-0 right-0 h-px bg-cobalt shadow-[0_0_10px_#0047AB]"
+                                />
+                            </div>
+
+                            {/* Content */}
+                            <h3 className="text-4xl font-bold text-white mb-6 relative z-10">{pillars[activeTab].title}</h3>
+                            <p className="text-xl text-white/70 font-light max-w-lg leading-relaxed relative z-10">
+                                {pillars[activeTab].desc}
+                            </p>
+
+                        </motion.div>
+                    </AnimatePresence>
+               </div>
+
+            </div>
+         </div>
+      </section>
+   );
+};
+
+// 3. TRUST: DEPLOYMENT SCENARIOS (Dynamic Visualization)
 const DeploymentScenarios = () => {
    const [activeCase, setActiveCase] = useState(0);
 
@@ -651,74 +792,8 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
          </motion.div>
       </section>
 
-      {/* 2. FEATURE DECK - HOLOGRAPHIC OVERHAUL */}
-      <section className="py-32 px-6 md:px-20 bg-onyx text-white border-y border-white/10 relative overflow-hidden">
-         <div className="absolute inset-0 bg-grid-pattern-dark opacity-10 pointer-events-none"></div>
-         
-         <div className="max-w-7xl mx-auto relative z-10">
-            <FadeIn>
-               <div className="flex justify-between items-end mb-16">
-                  <div>
-                     <h2 className="text-4xl font-bold tracking-tight mb-2">Core Architecture</h2>
-                     <p className="text-white/40 font-mono text-xs uppercase tracking-widest">/// System Specifications</p>
-                  </div>
-                  <div className="hidden md:flex gap-4">
-                     <div className="px-4 py-2 border border-white/10 rounded-full text-xs font-mono text-cobalt bg-cobalt/10">REV 4.2</div>
-                  </div>
-               </div>
-            </FadeIn>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-               {[
-                  { title: "High-NA Optics", icon: Crosshair, spec: "0.55 NA", sub: "Resolution Limit" },
-                  { title: "Backside Power", icon: Zap, spec: "30% ↓ IR", sub: "Voltage Droop" },
-                  { title: "RibbonFET", icon: Layers, spec: "4nm Pitch", sub: "Gate Contact" }
-               ].map((item, i) => (
-                  <React.Fragment key={i}>
-                    <FadeIn delay={i * 0.1}>
-                       <motion.div 
-                          whileHover={{ y: -5, borderColor: '#0047AB' }}
-                          className="group h-[450px] bg-white/5 border border-white/10 rounded-xl p-8 relative overflow-hidden transition-all duration-300 flex flex-col items-center justify-center text-center"
-                       >
-                          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-0"></div>
-                          
-                          {/* Centered Graphic Hero */}
-                          <div className="relative z-10 flex flex-col items-center">
-                             <motion.div
-                               whileHover={{ scale: 1.1 }}
-                               transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                               className="mb-8 relative"
-                             >
-                                <div className="absolute inset-0 bg-cobalt/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <item.icon 
-                                   size={80} 
-                                   strokeWidth={1}
-                                   className="text-white group-hover:text-cobalt transition-colors duration-500 drop-shadow-[0_0_15px_rgba(0,71,171,0.5)]" 
-                                />
-                             </motion.div>
-
-                             <h3 className="text-3xl font-bold mb-6">{item.title}</h3>
-                             
-                             <div className="w-12 h-px bg-white/20 mb-6 group-hover:bg-cobalt transition-colors"></div>
-                             
-                             <div className="grid grid-cols-2 gap-8 w-full">
-                                <div>
-                                   <div className="text-[10px] text-white/40 font-mono uppercase mb-1">Specification</div>
-                                   <div className="text-2xl font-mono font-bold text-cobalt">{item.spec}</div>
-                                </div>
-                                <div>
-                                   <div className="text-[10px] text-white/40 font-mono uppercase mb-1">Metric</div>
-                                   <div className="text-sm font-mono text-white/80">{item.sub}</div>
-                                </div>
-                             </div>
-                          </div>
-                       </motion.div>
-                    </FadeIn>
-                  </React.Fragment>
-               ))}
-            </div>
-         </div>
-      </section>
+      {/* 2. REPLACED: ARCHITECTURAL PILLARS */}
+      <ArchitecturalPillars />
 
       {/* 3. NEW SECTION: METHODOLOGY */}
       <MethodologySection />
