@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion, Variants } from 'framer-motion';
-import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck, TrendingUp, AlertCircle, Info, DollarSign, PieChart } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, Variants, useScroll, useSpring, useTransform } from 'framer-motion';
+import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck, TrendingUp, AlertCircle, Info, DollarSign, PieChart, Atom, Brain } from 'lucide-react';
 
 interface HomeProps {
   setPage: (page: string) => void;
@@ -55,6 +55,130 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children?: React.Reac
     {children}
   </motion.div>
 );
+
+// 4. NEW: THE AXON METHODOLOGY SECTION
+const MethodologySection = () => {
+   const containerRef = useRef<HTMLDivElement>(null);
+   const { scrollYProgress } = useScroll({
+      target: containerRef,
+      offset: ["start center", "end center"]
+   });
+
+   const scaleY = useSpring(scrollYProgress, {
+      stiffness: 100,
+      damping: 30,
+      restDelta: 0.001
+   });
+
+   const steps = [
+      {
+         title: "Atomic Precision",
+         desc: "We don't just etch silicon; we arrange atoms. Directed Self-Assembly (DSA) ensures zero-defect density at the angstrom scale.",
+         Icon: Atom
+      },
+      {
+         title: "Photonic Speed",
+         desc: "Electrons are too slow. Our native optical interconnects move data at the speed of light, eliminating latency bottlenecks.",
+         Icon: Zap
+      },
+      {
+         title: "Neural Architecture",
+         desc: "Built for AI, by AI. The A-1400 logic gates mimic biological synapses for unprecedented inference efficiency.",
+         Icon: Brain
+      }
+   ];
+
+   return (
+      <section ref={containerRef} className="py-32 bg-cobalt text-white relative overflow-hidden">
+         {/* Subtle Radial Noise Texture */}
+         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15)_1px,_transparent_1px)] bg-[length:32px_32px] opacity-30 pointer-events-none"></div>
+
+         <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <FadeIn>
+               <div className="mb-32 text-center">
+                  <h2 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6">The AXON Methodology</h2>
+                  <p className="text-white/70 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                     Redefining the physical limits of computation through three core pillars of atomic engineering.
+                  </p>
+               </div>
+            </FadeIn>
+
+            <div className="relative">
+               {/* THE SPINE (Desktop Only) */}
+               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2">
+                  <motion.div 
+                     style={{ scaleY }} 
+                     className="w-full h-full bg-white origin-top shadow-[0_0_20px_white]"
+                  />
+               </div>
+
+               <div className="space-y-32">
+                  {steps.map((step, i) => (
+                     <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-32 items-center relative group">
+                        
+                        {/* LEFT COLUMN: TEXT */}
+                        <motion.div
+                           initial={{ opacity: 0, x: -50 }}
+                           whileInView={{ opacity: 1, x: 0 }}
+                           viewport={{ once: true, margin: "-100px" }}
+                           transition={{ duration: 0.8, delay: i * 0.1, ease: EASE_PREMIUM }}
+                           className="text-left md:text-right"
+                        >
+                           <h3 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">{step.title}</h3>
+                           <p className="text-lg text-white/80 font-light leading-relaxed md:pl-20">{step.desc}</p>
+                        </motion.div>
+
+                        {/* CENTER NODE */}
+                        <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-cobalt border-2 border-white rounded-full z-20 shadow-[0_0_15px_white]"></div>
+
+                        {/* RIGHT COLUMN: ICON (Parallax) */}
+                        <ParallaxIcon Icon={step.Icon} delay={i * 0.1} />
+                     
+                     </div> 
+                  ))}
+               </div>
+            </div>
+         </div>
+      </section>
+   );
+};
+
+// Internal Helper for Parallax Icon
+const ParallaxIcon = ({ Icon, delay }: { Icon: React.ElementType, delay: number }) => {
+   const ref = useRef(null);
+   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+   const y = useTransform(scrollYProgress, [0, 1], [50, -50]); // Floating effect
+
+   return (
+      <motion.div ref={ref} style={{ y }} className="flex justify-start">
+         <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 200, damping: 20, delay: delay + 0.2 }}
+            className="w-32 h-32 md:w-56 md:h-56 bg-onyx rounded-full flex items-center justify-center border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-105 transition-transform duration-500"
+         >
+            {/* Dark Grid Background */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
+            
+            <Icon size={80} className="text-cyan-400 relative z-10 group-hover:rotate-12 transition-transform duration-700" strokeWidth={1.5} />
+            
+            {/* Floating Particles */}
+            <div className="absolute inset-0 pointer-events-none">
+               {[...Array(3)].map((_, j) => (
+                  <motion.div 
+                     key={j}
+                     animate={{ y: [0, -15, 0], opacity: [0.3, 1, 0.3] }}
+                     transition={{ duration: 2 + j, repeat: Infinity, ease: "easeInOut" }}
+                     className="absolute w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[1px]"
+                     style={{ left: `${20 + j*30}%`, top: `${60 - j*10}%` }}
+                  />
+               ))}
+            </div>
+         </motion.div>
+      </motion.div>
+   );
+};
 
 const Home: React.FC<HomeProps> = ({ setPage }) => {
   return (
@@ -192,7 +316,10 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
          </div>
       </section>
 
-      {/* 3. PARTNER ECOSYSTEM */}
+      {/* 3. NEW SECTION: METHODOLOGY */}
+      <MethodologySection />
+
+      {/* 4. PARTNER ECOSYSTEM */}
       <section className="py-24 px-6 md:px-20 bg-surface border-b border-onyx/10">
          <div className="max-w-7xl mx-auto">
             <FadeIn>
@@ -238,7 +365,7 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
          </div>
       </section>
 
-      {/* 4. PREDICTIVE SCALING */}
+      {/* 5. PREDICTIVE SCALING */}
       <section className="py-24 px-6 md:px-20 bg-onyx text-white border-t border-white/10 relative overflow-hidden">
          <div className="absolute inset-0 bg-grid-pattern-dark opacity-10 pointer-events-none"></div>
 
@@ -360,7 +487,7 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
          </div>
       </section>
 
-      {/* 5. SUPPLY CHAIN VELOCITY */}
+      {/* 6. SUPPLY CHAIN VELOCITY */}
       <section className="py-24 px-6 md:px-20 bg-white border-t border-onyx/10 relative overflow-hidden">
          {/* Background accent */}
          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cobalt/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -418,7 +545,7 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
          </div>
       </section>
 
-      {/* 6. INVESTOR DATA / FINANCIAL PERFORMANCE */}
+      {/* 7. INVESTOR DATA / FINANCIAL PERFORMANCE */}
       <section className="py-24 px-6 md:px-20 bg-surface border-t border-onyx/10 relative overflow-hidden">
          {/* Subtle Background Graphic */}
          <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-cobalt/5 to-transparent pointer-events-none"></div>
