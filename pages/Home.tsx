@@ -7,32 +7,64 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ setPage }) => {
+  // Staggered Animation Variants for Hero Section
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: 'blur(0px)',
+      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] } 
+    }
+  };
+
   return (
     <div className="w-full">
-      {/* 1. HERO SECTION (KEPT AS IS) */}
+      {/* 1. HERO SECTION */}
       <section className="min-h-screen flex flex-col justify-center px-6 md:px-20 pt-20 relative overflow-hidden bg-surface">
          
-         <div className="max-w-5xl z-10">
+         <motion.div 
+           className="max-w-5xl z-10"
+           variants={containerVariants}
+           initial="hidden"
+           animate="visible"
+         >
             <motion.div 
-               initial={{ opacity: 0, y: 20 }}
-               animate={{ opacity: 1, y: 0 }}
+               variants={itemVariants}
                className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-onyx/10 rounded-full shadow-sm mb-8"
             >
                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                <span className="text-[10px] font-bold tracking-widest text-onyx/60 uppercase">Fab 4.2 Online</span>
             </motion.div>
 
-            <h1 className="text-7xl md:text-[10rem] font-bold leading-[0.85] tracking-tighter text-onyx mb-10">
+            <motion.h1 
+               variants={itemVariants}
+               className="text-7xl md:text-[10rem] font-bold leading-[0.85] tracking-tighter text-onyx mb-10"
+            >
                Silicon <br/>
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cobalt to-blue-400">Evolution.</span>
-            </h1>
+            </motion.h1>
 
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-               <p className="max-w-xl text-xl text-onyx/60 font-medium leading-relaxed">
+            <motion.div 
+               variants={itemVariants}
+               className="flex flex-col gap-8 items-start max-w-xl"
+            >
+               <p className="text-xl text-onyx/60 font-medium leading-relaxed">
                   The world's first 14 Ångström process node. Fabricated for the post-silicon era with directed self-assembly.
                </p>
                
-               {/* REFINED CTA BUTTON: Glassmorphic Outline */}
+               {/* REFINED CTA BUTTON: Glassmorphic Outline - Moved below text */}
                <button 
                   onClick={() => setPage('specs')} 
                   className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold border border-onyx/10 bg-white/5 backdrop-blur-sm text-onyx transition-all duration-300 hover:bg-cobalt hover:border-transparent hover:text-white hover:shadow-[0_0_20px_rgba(0,71,171,0.4)]"
@@ -40,16 +72,21 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
                   Technical Data
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300"/>
                </button>
-            </div>
-         </div>
+            </motion.div>
+         </motion.div>
 
-         {/* Hero Graphic */}
-         <div className="absolute right-[-10%] top-[20%] w-[800px] h-[800px] opacity-10 pointer-events-none">
+         {/* Hero Graphic - Animated Entrance */}
+         <motion.div 
+            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+            animate={{ opacity: 0.1, scale: 1, rotate: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+            className="absolute right-[-10%] top-[20%] w-[800px] h-[800px] pointer-events-none"
+         >
             <div className="w-full h-full border-[2px] border-onyx rounded-full flex items-center justify-center animate-[spin_60s_linear_infinite]">
                <div className="w-[80%] h-[80%] border border-dashed border-onyx rounded-full"></div>
                <div className="w-[60%] h-[60%] border border-onyx rounded-full"></div>
             </div>
-         </div>
+         </motion.div>
       </section>
 
       {/* 2. FEATURE DECK */}
