@@ -24,17 +24,17 @@ const Contact: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-surface min-h-screen pt-24 pb-20 px-6 text-onyx overflow-hidden relative">
+    <div className="bg-surface min-h-screen pt-20 pb-20 px-6 text-onyx overflow-hidden relative">
       {/* Background Tech Grid - Light Mode */}
       <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
       
       {/* Animated Scan Line - Cobalt Blue */}
       <div className="absolute top-0 left-0 w-full h-1 bg-cobalt/30 shadow-[0_0_20px_#0047AB] animate-[scan_4s_linear_infinite] pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-20 relative z-10 h-full">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 relative z-10 h-full">
          
          {/* LEFT: INFO DASHBOARD - Clean Room Style */}
-         <div className="flex flex-col justify-center py-12">
+         <div className="flex flex-col justify-start pt-8 lg:pt-12">
             <div className="mb-12">
                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-onyx/10 rounded-full mb-6 shadow-sm">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -69,7 +69,7 @@ const Contact: React.FC = () => {
          </div>
 
          {/* RIGHT: TERMINAL FORM - White/Light Grey */}
-         <div className="flex items-center">
+         <div className="flex items-start pt-8 lg:pt-12">
             <div className="w-full bg-white border border-onyx/10 rounded-xl overflow-hidden shadow-2xl relative">
                {/* Terminal Header */}
                <div className="bg-gray-50 border-b border-onyx/10 px-4 py-2 flex items-center justify-between">
