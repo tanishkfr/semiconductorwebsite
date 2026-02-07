@@ -43,12 +43,13 @@ const heroButtonVars: Variants = {
 
 // --- SUB-COMPONENTS ---
 
+// UPDATED: Global FadeIn with Blur Reveal
 const FadeIn = ({ children, delay = 0, className = "" }: { children?: React.ReactNode, delay?: number, className?: string }) => (
   <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
+    initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+    whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
     viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.6, delay, ease: "easeOut" }}
+    transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1.0] }}
     className={className}
   >
     {children}
@@ -448,7 +449,7 @@ const DeploymentScenarios = () => {
    );
 }
 
-
+// 3. METHODOLOGY SECTION: NEURAL FLOW UPGRADE
 const MethodologySection = () => {
    const containerRef = useRef<HTMLDivElement>(null);
    const { scrollYProgress } = useScroll({
@@ -481,9 +482,17 @@ const MethodologySection = () => {
    ];
 
    return (
-      <section ref={containerRef} className="py-32 bg-cobalt text-white relative overflow-hidden">
-         {/* Subtle Radial Noise Texture */}
-         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15)_1px,_transparent_1px)] bg-[length:32px_32px] opacity-30 pointer-events-none"></div>
+      <motion.section 
+         ref={containerRef} 
+         className="py-32 text-white relative overflow-hidden"
+         // DYNAMIC BACKGROUND: DEEP NAVY TO COBALT
+         animate={{ backgroundColor: ["#0047AB", "#002855", "#0066CC", "#0047AB"] }}
+         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      >
+         {/* Noise Overlay */}
+         <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay"
+              style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+         ></div>
 
          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <FadeIn>
@@ -497,10 +506,16 @@ const MethodologySection = () => {
 
             <div className="relative">
                {/* THE SPINE (Desktop Only) */}
-               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2">
+               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2 overflow-hidden">
                   <motion.div 
                      style={{ scaleY }} 
                      className="w-full h-full bg-white origin-top shadow-[0_0_20px_white]"
+                  />
+                  {/* DATA PULSE: TRAVELING LIGHT */}
+                  <motion.div 
+                     className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-transparent via-cyan-400 to-transparent"
+                     animate={{ top: ["-20%", "120%"] }}
+                     transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                   />
                </div>
 
@@ -508,34 +523,32 @@ const MethodologySection = () => {
                   {steps.map((step, i) => (
                      <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-32 items-center relative group">
                         
-                        {/* LEFT COLUMN: TEXT */}
-                        <motion.div
-                           initial={{ opacity: 0, x: -50 }}
-                           whileInView={{ opacity: 1, x: 0 }}
-                           viewport={{ once: true, margin: "-100px" }}
-                           transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
-                           className="text-left md:text-right"
-                        >
-                           <h3 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">{step.title}</h3>
-                           <p className="text-lg text-white/80 font-light leading-relaxed md:pl-20">{step.desc}</p>
-                        </motion.div>
+                        {/* LEFT COLUMN: TEXT - GLASS PANEL UPGRADE */}
+                        <FadeIn delay={i * 0.1} className={`text-left md:text-right ${i % 2 !== 0 ? 'md:order-last md:text-left' : ''}`}>
+                           <div className="p-8 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-cyan-400/50 transition-all duration-500 group">
+                               <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight group-hover:text-cyan-400 transition-colors">{step.title}</h3>
+                               <p className="text-base text-white/80 font-light leading-relaxed">{step.desc}</p>
+                           </div>
+                        </FadeIn>
 
                         {/* CENTER NODE */}
                         <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-cobalt border-2 border-white rounded-full z-20 shadow-[0_0_15px_white]"></div>
 
-                        {/* RIGHT COLUMN: ICON (Parallax) */}
-                        <ParallaxIcon Icon={step.Icon} delay={i * 0.1} />
+                        {/* RIGHT COLUMN: ICON (Parallax + Breathing) */}
+                        <div className={`${i % 2 !== 0 ? 'md:order-first md:justify-end' : ''} flex justify-start md:justify-start`}>
+                             <ParallaxIcon Icon={step.Icon} delay={i * 0.1} />
+                        </div>
                      
                      </div> 
                   ))}
                </div>
             </div>
          </div>
-      </section>
+      </motion.section>
    );
 };
 
-// Internal Helper for Parallax Icon
+// Internal Helper for Parallax Icon (Updated with Breathing)
 const ParallaxIcon = ({ Icon, delay }: { Icon: React.ElementType, delay: number }) => {
    const ref = useRef(null);
    const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -548,25 +561,32 @@ const ParallaxIcon = ({ Icon, delay }: { Icon: React.ElementType, delay: number 
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 200, damping: 20, delay: delay + 0.2 }}
-            className="w-32 h-32 md:w-56 md:h-56 bg-onyx rounded-full flex items-center justify-center border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-105 transition-transform duration-500"
+            // Breathing Animation Container
+            className="relative"
          >
-            {/* Dark Grid Background */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
-            
-            <Icon size={80} className="text-cyan-400 relative z-10 group-hover:rotate-12 transition-transform duration-700" strokeWidth={1.5} />
-            
-            {/* Floating Particles */}
-            <div className="absolute inset-0 pointer-events-none">
-               {[...Array(3)].map((_, j) => (
-                  <motion.div 
-                     key={j}
-                     animate={{ y: [0, -15, 0], opacity: [0.3, 1, 0.3] }}
-                     transition={{ duration: 2 + j, repeat: Infinity, ease: "easeInOut" }}
-                     className="absolute w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[1px]"
-                     style={{ left: `${20 + j*30}%`, top: `${60 - j*10}%` }}
-                  />
-               ))}
-            </div>
+             <motion.div
+                animate={{ y: [-10, 10, -10] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="w-32 h-32 md:w-56 md:h-56 bg-onyx rounded-full flex items-center justify-center border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-105 transition-transform duration-500"
+             >
+                {/* Dark Grid Background */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
+                
+                <Icon size={80} className="text-cyan-400 relative z-10 group-hover:rotate-12 transition-transform duration-700" strokeWidth={1.5} />
+                
+                {/* Floating Particles */}
+                <div className="absolute inset-0 pointer-events-none">
+                   {[...Array(3)].map((_, j) => (
+                      <motion.div 
+                         key={j}
+                         animate={{ y: [0, -15, 0], opacity: [0.3, 1, 0.3] }}
+                         transition={{ duration: 2 + j, repeat: Infinity, ease: "easeInOut" }}
+                         className="absolute w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[1px]"
+                         style={{ left: `${20 + j*30}%`, top: `${60 - j*10}%` }}
+                      />
+                   ))}
+                </div>
+             </motion.div>
          </motion.div>
       </motion.div>
    );
