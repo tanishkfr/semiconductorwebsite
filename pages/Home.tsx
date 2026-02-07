@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck, TrendingUp, AlertCircle } from 'lucide-react';
+import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck, TrendingUp, AlertCircle, Info } from 'lucide-react';
 
 interface HomeProps {
   setPage: (page: string) => void;
@@ -147,74 +147,117 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
          </div>
       </section>
 
-      {/* 4. PREDICTIVE SCALING (MOVED UP) */}
+      {/* 4. PREDICTIVE SCALING */}
       <section className="py-24 px-6 md:px-20 bg-onyx text-white border-t border-white/10 relative overflow-hidden">
          <div className="absolute inset-0 bg-grid-pattern-dark opacity-10 pointer-events-none"></div>
 
          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="flex justify-between items-end mb-12">
-               <div>
-                  <h2 className="text-3xl font-bold tracking-tight mb-2">Predictive Scaling</h2>
-                  <p className="text-white/40 font-mono text-xs uppercase tracking-widest">/// AI-Driven Capacity Planning</p>
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+               <div className="mb-8 md:mb-0">
+                  <div className="flex items-center gap-2 mb-2">
+                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                     <p className="text-white/40 font-mono text-xs uppercase tracking-widest">Live Capacity Forecasting</p>
+                  </div>
+                  <h2 className="text-4xl font-bold tracking-tight">Predictive Scaling</h2>
                </div>
                
-               <div className="flex gap-8 text-right">
+               <div className="flex gap-8 text-right bg-white/5 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
                   <div>
-                     <div className="text-xs font-mono text-white/40 uppercase mb-1">Q3 Allocation</div>
-                     <div className="text-green-400 font-bold font-mono">GUARANTEED</div>
+                     <div className="text-[10px] font-mono text-white/40 uppercase mb-1">Total Allocated</div>
+                     <div className="text-white font-bold font-mono text-xl">14.2M <span className="text-xs text-white/40">Units</span></div>
                   </div>
+                  <div className="w-px h-full bg-white/10"></div>
                   <div>
-                     <div className="text-xs font-mono text-white/40 uppercase mb-1">Burst Cap</div>
-                     <div className="text-cobalt font-bold font-mono">+40%</div>
+                     <div className="text-[10px] font-mono text-white/40 uppercase mb-1">Forecast Delta</div>
+                     <div className="text-cobalt font-bold font-mono text-xl">+22.4%</div>
                   </div>
                </div>
             </div>
 
-            {/* FORECAST GRAPH */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-8 md:p-12 relative overflow-hidden">
-               {/* Graph Area */}
-               <div className="flex items-end justify-between h-64 gap-4 relative z-10">
-                  {['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'].map((mo, i) => {
-                     const demand = 40 + Math.random() * 40;
-                     const capacity = demand + 15;
-                     
-                     return (
-                        <div key={i} className="w-full flex flex-col justify-end gap-1 group relative">
-                           {/* Tooltip */}
-                           <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white text-onyx text-xs font-mono py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none">
-                              DEMAND: {Math.floor(demand)}K
-                           </div>
+            {/* ENGINEERING CHART */}
+            <div className="w-full h-[400px] bg-black/20 border border-white/10 rounded-xl p-8 relative flex flex-col">
+               
+               {/* Grid Background */}
+               <div className="absolute inset-0 p-8 flex flex-col justify-between pointer-events-none z-0">
+                  {[100, 75, 50, 25, 0].map((val, i) => (
+                     <div key={i} className="w-full h-px bg-white/5 relative">
+                        <span className="absolute -left-8 -top-2 text-[10px] font-mono text-white/20">{val}%</span>
+                     </div>
+                  ))}
+               </div>
 
-                           {/* Capacity Ghost Bar */}
-                           <div className="w-full bg-white/5 rounded-sm relative overflow-hidden" style={{ height: `${capacity}%` }}>
-                              <div className="absolute top-0 w-full h-px bg-white/20 border-t border-dashed border-white/40"></div>
+               {/* Chart Bars */}
+               <div className="flex-1 flex items-end justify-around relative z-10 pl-8">
+                  {[
+                     { q: "Q1 '25", demand: 45, cap: 60, status: "OPTIMAL" },
+                     { q: "Q2 '25", demand: 65, cap: 70, status: "OPTIMAL" },
+                     { q: "Q3 '25", demand: 85, cap: 80, status: "CRITICAL" },
+                     { q: "Q4 '25", demand: 98, cap: 85, status: "OVERFLOW" }
+                  ].map((data, i) => (
+                     <div key={i} className="group relative flex flex-col items-center gap-4 h-full justify-end w-full px-2 md:px-8">
+                        
+                        {/* Hover Tooltip */}
+                        <div className="absolute -top-12 bg-white text-onyx px-3 py-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20">
+                           <div className="text-[10px] font-mono font-bold whitespace-nowrap">
+                              DEMAND: {data.demand}k / CAP: {data.cap}k
                            </div>
-                           
-                           {/* Demand Fill Bar */}
+                           <div className={`text-[9px] font-mono font-bold mt-1 ${
+                              data.status === 'OPTIMAL' ? 'text-green-600' : 
+                              data.status === 'CRITICAL' ? 'text-yellow-600' : 'text-red-600'
+                           }`}>
+                              STATUS: {data.status}
+                           </div>
+                        </div>
+
+                        <div className="w-full relative h-full flex items-end justify-center">
+                           {/* Capacity Line (Ghost Bar) */}
                            <motion.div 
                               initial={{ height: 0 }}
-                              whileInView={{ height: `${demand}%` }}
+                              whileInView={{ height: `${data.cap}%` }}
                               transition={{ duration: 1, delay: i * 0.1 }}
-                              className="absolute bottom-0 w-full bg-cobalt rounded-sm shadow-[0_0_15px_rgba(0,71,171,0.4)] group-hover:bg-blue-400 transition-colors"
+                              className="absolute bottom-0 w-full border-x border-t border-dashed border-white/30 bg-white/5 z-0"
+                           />
+
+                           {/* Demand Bar (Solid) */}
+                           <motion.div 
+                              initial={{ height: 0 }}
+                              whileInView={{ height: `${data.demand}%` }}
+                              transition={{ duration: 1, delay: 0.2 + (i * 0.1), type: "spring", bounce: 0.2 }}
+                              className={`w-[60%] z-10 relative ${
+                                 data.status === 'OVERFLOW' ? 'bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.4)]' : 
+                                 data.status === 'CRITICAL' ? 'bg-yellow-500 shadow-[0_0_20px_rgba(234,179,8,0.4)]' : 
+                                 'bg-cobalt shadow-[0_0_20px_rgba(0,71,171,0.4)]'
+                              }`}
                            >
+                              {data.status === 'OVERFLOW' && (
+                                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-red-500 animate-bounce">
+                                    <AlertCircle size={16} />
+                                 </div>
+                              )}
                            </motion.div>
-                           
-                           <div className="text-center mt-2 text-[10px] font-mono text-white/30">{mo}</div>
                         </div>
-                     )
-                  })}
+                        
+                        <div className="text-xs font-mono text-white/50 border-t border-white/10 pt-2 w-full text-center group-hover:text-white transition-colors">
+                           {data.q}
+                        </div>
+                     </div>
+                  ))}
                </div>
-               
-               {/* Legend */}
-               <div className="absolute top-6 right-6 flex gap-4">
-                  <div className="flex items-center gap-2">
-                     <div className="w-2 h-2 bg-cobalt rounded-full"></div>
-                     <span className="text-[10px] font-mono text-white/50">PROJECTED DEMAND</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                     <div className="w-2 h-2 bg-white/20 border border-dashed border-white/40 rounded-full"></div>
-                     <span className="text-[10px] font-mono text-white/50">AVAILABLE CAP</span>
-                  </div>
+            </div>
+
+            {/* Legend */}
+            <div className="mt-8 flex justify-center gap-8">
+               <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-cobalt"></div>
+                  <span className="text-[10px] font-mono text-white/60 uppercase">Market Demand</span>
+               </div>
+               <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-white/10 border border-dashed border-white/30"></div>
+                  <span className="text-[10px] font-mono text-white/60 uppercase">Allocated Capacity</span>
+               </div>
+               <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500"></div>
+                  <span className="text-[10px] font-mono text-white/60 uppercase">Supply Overflow</span>
                </div>
             </div>
          </div>

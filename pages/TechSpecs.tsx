@@ -54,7 +54,7 @@ const TechSpecs: React.FC = () => {
                </button>
             </div>
 
-            {/* Visualization Window - COBALT GLOW ADDED */}
+            {/* Visualization Window */}
             <div className="lg:col-span-2 bg-onyx rounded-2xl border border-onyx/5 relative overflow-hidden h-[500px] shadow-[0_0_40px_rgba(0,71,171,0.25)] flex items-center justify-center">
                <div className="absolute inset-0 bg-grid-pattern-dark bg-grid opacity-20 pointer-events-none"></div>
                
@@ -154,69 +154,61 @@ const TechSpecs: React.FC = () => {
             </div>
          </div>
 
-         {/* 3. I/O STANDARDS TABLE - NOW DARK THEMED */}
-         <div className="mb-24 bg-onyx text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-grid-pattern-dark opacity-10 pointer-events-none"></div>
-
-            <div className="flex items-center gap-3 mb-8 relative z-10">
-               <div className="p-2 bg-white/10 rounded-lg"><Cable className="text-white" size={24}/></div>
-               <h2 className="text-2xl font-bold text-white">Supported I/O Protocols</h2>
+         {/* 3. I/O STANDARDS TABLE - CLEAN ENGINEERING GRID */}
+         <div className="mb-24">
+            <div className="flex items-center gap-3 mb-8">
+               <div className="p-2 bg-cobalt/10 rounded-lg"><Cable className="text-cobalt" size={24}/></div>
+               <h2 className="text-2xl font-bold text-onyx">Supported I/O Protocols</h2>
             </div>
             
-            <div className="overflow-hidden rounded-xl border border-white/10 shadow-sm relative z-10">
+            <div className="w-full">
                <table className="w-full text-left border-collapse">
-                  <thead className="bg-white/5 text-white">
-                     <tr>
-                        <th className="p-4 text-xs font-mono uppercase tracking-widest border-r border-white/10">Protocol</th>
-                        <th className="p-4 text-xs font-mono uppercase tracking-widest border-r border-white/10">Version</th>
-                        <th className="p-4 text-xs font-mono uppercase tracking-widest border-r border-white/10">Raw Bandwidth</th>
-                        <th className="p-4 text-xs font-mono uppercase tracking-widest">Target Application</th>
+                  <thead>
+                     <tr className="border-b border-onyx/10">
+                        <th className="py-4 text-xs font-mono uppercase tracking-widest text-onyx/40">Protocol</th>
+                        <th className="py-4 text-xs font-mono uppercase tracking-widest text-onyx/40">Version</th>
+                        <th className="py-4 text-xs font-mono uppercase tracking-widest text-onyx/40">Bandwidth</th>
+                        <th className="py-4 text-xs font-mono uppercase tracking-widest text-onyx/40">Target Application</th>
                      </tr>
                   </thead>
-                  <tbody className="bg-transparent text-white">
-                     <tr className="border-b border-white/10 hover:bg-white/5 transition-colors">
-                        <td className="p-4 font-bold text-white border-r border-white/10">PCI Express</td>
-                        <td className="p-4 font-mono text-sm text-white/60 border-r border-white/10">Gen 6.0</td>
-                        <td className="p-4 font-mono text-sm text-cobalt border-r border-white/10">64 GT/s</td>
-                        <td className="p-4 text-sm text-white/60">GPU Interconnect & NVMe Storage</td>
-                     </tr>
-                     <tr className="border-b border-white/10 hover:bg-white/5 transition-colors">
-                        <td className="p-4 font-bold text-white border-r border-white/10">CXL</td>
-                        <td className="p-4 font-mono text-sm text-white/60 border-r border-white/10">3.0</td>
-                        <td className="p-4 font-mono text-sm text-cobalt border-r border-white/10">128 GB/s</td>
-                        <td className="p-4 text-sm text-white/60">Cache Coherent Memory Expansion</td>
-                     </tr>
-                     <tr className="border-b border-white/10 hover:bg-white/5 transition-colors">
-                        <td className="p-4 font-bold text-white border-r border-white/10">UCIe</td>
-                        <td className="p-4 font-mono text-sm text-white/60 border-r border-white/10">1.1</td>
-                        <td className="p-4 font-mono text-sm text-cobalt border-r border-white/10">32 GT/s</td>
-                        <td className="p-4 text-sm text-white/60">Die-to-Die Chiplet Communication</td>
-                     </tr>
-                     <tr className="hover:bg-white/5 transition-colors">
-                        <td className="p-4 font-bold text-white border-r border-white/10">Ethernet</td>
-                        <td className="p-4 font-mono text-sm text-white/60 border-r border-white/10">800G</td>
-                        <td className="p-4 font-mono text-sm text-cobalt border-r border-white/10">800 Gbps</td>
-                        <td className="p-4 text-sm text-white/60">Hyperscale Networking Fabric</td>
-                     </tr>
+                  <tbody>
+                     {[
+                        { name: "PCI Express", ver: "Gen 6.0", bw: "64 GT/s", app: "GPU Interconnect & NVMe Storage" },
+                        { name: "CXL", ver: "3.0", bw: "128 GB/s", app: "Cache Coherent Memory Expansion" },
+                        { name: "UCIe", ver: "1.1", bw: "32 GT/s", app: "Die-to-Die Chiplet Communication" },
+                        { name: "Ethernet", ver: "800G", bw: "800 Gbps", app: "Hyperscale Networking Fabric" }
+                     ].map((row, i) => (
+                        <tr key={i} className="border-b border-onyx/5 hover:bg-onyx/5 transition-colors group">
+                           <td className="py-6 pr-4">
+                              <span className="text-xl font-bold text-onyx">{row.name}</span>
+                           </td>
+                           <td className="py-6 pr-4 font-mono text-sm text-onyx/60">{row.ver}</td>
+                           <td className="py-6 pr-4">
+                              <span className="inline-block px-3 py-1 bg-cobalt/10 text-cobalt font-mono text-sm font-bold rounded-full">
+                                 {row.bw}
+                              </span>
+                           </td>
+                           <td className="py-6 text-sm text-onyx/60 font-medium">{row.app}</td>
+                        </tr>
+                     ))}
                   </tbody>
                </table>
             </div>
          </div>
 
-         {/* 4. PROTOCOL COMPLIANCE (NEW SECTION) */}
+         {/* 4. PROTOCOL COMPLIANCE (TECHNICAL STAMPS) */}
          <div className="mb-32">
             <h3 className="text-sm font-bold uppercase tracking-widest text-onyx/40 mb-6">Protocol Compliance & Certification</h3>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
                {[
                   "PCIe Gen6 Ready", "CXL 3.0 Type 1/2/3", "JEDEC HBM4", "LPDDR5X-8533", 
                   "MIPI C-PHY v2.1", "OIF-CEI-112G-LR", "JESD204C", "NVMe 2.0b", "TSMC N2 IP"
                ].map((tag, i) => (
-                  <div key={i} className="px-4 py-2 bg-white border border-onyx/10 rounded-full text-xs font-mono font-bold text-onyx hover:border-cobalt hover:text-cobalt transition-colors cursor-default flex items-center gap-2 shadow-sm">
-                     <CheckCircle2 size={12} className="text-green-500" />
+                  <div key={i} className="px-4 py-2 bg-white border border-onyx/10 text-xs font-mono font-bold text-onyx uppercase tracking-wide hover:border-cobalt hover:text-cobalt transition-colors cursor-default shadow-sm">
                      {tag}
                   </div>
                ))}
-               <div className="px-4 py-2 bg-cobalt/5 border border-dashed border-cobalt/30 rounded-full text-xs font-mono text-cobalt flex items-center gap-2">
+               <div className="px-4 py-2 bg-onyx/5 border border-dashed border-onyx/20 text-xs font-mono text-onyx/60 uppercase tracking-wide">
                   +12 More
                </div>
             </div>
