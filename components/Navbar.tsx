@@ -12,6 +12,9 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setPage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
 
+  // Theme check: Contact page is now dark ("Industrial Dashboard"), so we need white text initially
+  const isDarkPage = activePage === 'contact';
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
   });
@@ -22,7 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setPage }) => {
         layout
         initial={{ width: "90%", borderRadius: "24px", y: 0 }}
         animate={{ 
-           width: isScrolled ? "fit-content" : "90%",
+           width: isScrolled ? "min-content" : "90%",
            borderRadius: "9999px",
            y: isScrolled ? 10 : 0,
            backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.9)" : "transparent",
@@ -30,28 +33,34 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setPage }) => {
            boxShadow: isScrolled ? "0 20px 40px rgba(0,0,0,0.1)" : "none",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.8 }}
-        className="pointer-events-auto flex items-center justify-between px-3 py-3"
+        className="pointer-events-auto flex items-center justify-between px-2 py-2 md:px-3 md:py-3"
         style={{ maxWidth: '1400px' }}
       >
         
         {/* BRANDING */}
-        <button onClick={() => setPage('home')} className="flex items-center gap-3 px-3 group">
-           <div className="relative w-8 h-8">
+        <button onClick={() => setPage('home')} className="flex items-center gap-3 px-3 group overflow-hidden">
+           <div className="relative w-8 h-8 shrink-0">
               <svg viewBox="0 0 60 60" fill="none" className="w-full h-full drop-shadow-md">
-                  <path d="M30 0L60 60H0L30 0Z" fill="#1D1D1F"/>
-                  <path d="M30 15L45 60H15L30 15Z" fill="#FFFFFF"/>
+                  <path d="M30 0L60 60H0L30 0Z" fill={isScrolled ? "#1D1D1F" : isDarkPage ? "#FFFFFF" : "#1D1D1F"}/>
+                  <path d="M30 15L45 60H15L30 15Z" fill={isScrolled ? "#FFFFFF" : isDarkPage ? "#0047AB" : "#FFFFFF"}/>
               </svg>
            </div>
            <motion.span 
-             animate={{ opacity: isScrolled ? 0 : 1, width: isScrolled ? 0 : "auto" }}
-             className="font-bold tracking-tight text-xl text-onyx overflow-hidden whitespace-nowrap"
+             initial={{ opacity: 1, width: "auto" }}
+             animate={{ 
+               opacity: isScrolled ? 0 : 1, 
+               width: isScrolled ? 0 : "auto",
+               marginLeft: isScrolled ? 0 : 12
+             }}
+             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+             className={`font-bold tracking-tight text-xl whitespace-nowrap ${isScrolled ? 'text-onyx' : isDarkPage ? 'text-white' : 'text-onyx'}`}
            >
              AXON
            </motion.span>
         </button>
 
         {/* NAVIGATION PILL */}
-        <nav className={`flex items-center gap-1 p-1 rounded-full ${isScrolled ? '' : 'bg-white/50 backdrop-blur-md border border-white/20 shadow-sm'}`}>
+        <nav className={`hidden md:flex items-center gap-1 p-1 rounded-full ${isScrolled ? '' : isDarkPage ? 'bg-white/10 backdrop-blur-md border border-white/10' : 'bg-white/50 backdrop-blur-md border border-white/20 shadow-sm'}`}>
            {NAV_ITEMS.map((item) => {
              const isActive = activePage === item.id;
              return (
@@ -59,7 +68,13 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setPage }) => {
                  key={item.id}
                  onClick={() => setPage(item.id)}
                  className={`relative px-5 py-2 rounded-full text-xs font-bold transition-all duration-300 z-10 ${
-                   isActive ? 'text-onyx' : 'text-gray-500 hover:text-azure'
+                   isActive 
+                     ? 'text-onyx' 
+                     : isScrolled 
+                        ? 'text-gray-500 hover:text-azure' 
+                        : isDarkPage 
+                           ? 'text-white/70 hover:text-white' 
+                           : 'text-gray-500 hover:text-azure'
                  }`}
                >
                  {isActive && (
@@ -78,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setPage }) => {
         {/* CTA BUTTON (TRANSFORMING) */}
         <motion.button 
            onClick={() => setPage('contact')} 
-           className="bg-onyx text-white h-10 rounded-full overflow-hidden flex items-center justify-center hover:bg-azure transition-colors shadow-lg shadow-onyx/20 relative"
+           className={`h-10 rounded-full overflow-hidden flex items-center justify-center transition-colors shadow-lg relative ${isDarkPage && !isScrolled ? 'bg-white text-onyx hover:bg-white/90' : 'bg-onyx text-white hover:bg-azure shadow-onyx/20'}`}
            animate={{ 
              width: isScrolled ? 40 : 130, // Shrink to circle
              padding: 0

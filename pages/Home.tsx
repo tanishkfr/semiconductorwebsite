@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck } from 'lucide-react';
+import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck, TrendingUp, AlertCircle } from 'lucide-react';
 
 interface HomeProps {
   setPage: (page: string) => void;
@@ -103,7 +103,7 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
          </div>
       </section>
 
-      {/* 3. PARTNER ECOSYSTEM (REPLACES NETWORK TOPOLOGY) */}
+      {/* 3. PARTNER ECOSYSTEM */}
       <section className="py-24 px-6 md:px-20 bg-surface border-b border-onyx/10">
          <div className="max-w-7xl mx-auto">
             <div className="flex items-center gap-2 mb-12">
@@ -240,22 +240,22 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
       </section>
 
       {/* 5. SUPPLY CHAIN VELOCITY */}
-      <section className="py-24 px-6 md:px-20 bg-onyx text-white border-t border-white/10 relative overflow-hidden">
+      <section className="py-24 px-6 md:px-20 bg-white border-t border-onyx/10 relative overflow-hidden">
          {/* Background accent */}
          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cobalt/5 rounded-full blur-[100px] pointer-events-none"></div>
 
          <div className="max-w-7xl mx-auto relative z-10">
             <div className="flex items-center gap-3 mb-16">
-               <div className="p-2 bg-cobalt/20 rounded-lg"><Timer className="text-cobalt" size={24}/></div>
+               <div className="p-2 bg-cobalt/10 rounded-lg"><Timer className="text-cobalt" size={24}/></div>
                <div>
-                 <h2 className="text-2xl font-bold">Supply Chain Velocity</h2>
-                 <p className="text-xs font-mono text-white/40 uppercase tracking-widest">End-to-End Latency Tracking</p>
+                 <h2 className="text-2xl font-bold text-onyx">Supply Chain Velocity</h2>
+                 <p className="text-xs font-mono text-onyx/40 uppercase tracking-widest">End-to-End Latency Tracking</p>
                </div>
             </div>
 
             <div className="relative">
                {/* Connecting Line (Desktop) */}
-               <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-white/5 via-white/20 to-white/5 -translate-y-1/2 z-0"></div>
+               <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-onyx/5 via-onyx/20 to-onyx/5 -translate-y-1/2 z-0"></div>
 
                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
                   {[
@@ -267,22 +267,95 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
                      <div key={i} className="group">
                         <div className="flex flex-col items-center text-center">
                            {/* Icon Node */}
-                           <div className="w-16 h-16 bg-onyx border border-white/20 rounded-full flex items-center justify-center mb-6 relative z-10 group-hover:border-cobalt group-hover:shadow-[0_0_20px_rgba(0,71,171,0.3)] transition-all duration-300">
-                              <item.icon size={24} className="text-white/60 group-hover:text-cobalt transition-colors" />
+                           <div className="w-16 h-16 bg-white border border-onyx/10 rounded-full flex items-center justify-center mb-6 relative z-10 group-hover:border-cobalt group-hover:shadow-[0_0_20px_rgba(0,71,171,0.2)] transition-all duration-300">
+                              <item.icon size={24} className="text-onyx/60 group-hover:text-cobalt transition-colors" />
                               {i === 1 && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse border-2 border-onyx"></div>
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse border-2 border-white"></div>
                               )}
                            </div>
                            
                            {/* Data Card */}
-                           <div className="w-full bg-white/5 border border-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/10 transition-colors">
-                              <div className="text-2xl font-mono font-bold text-white mb-1">{item.time}</div>
+                           <div className="w-full bg-surface border border-onyx/10 p-6 rounded-xl hover:bg-white transition-colors shadow-sm">
+                              <div className="text-2xl font-mono font-bold text-onyx mb-1">{item.time}</div>
                               <div className="text-xs font-bold uppercase tracking-wider text-cobalt mb-2">{item.stage}</div>
-                              <div className="text-xs text-white/40 font-mono">{item.desc}</div>
+                              <div className="text-xs text-onyx/40 font-mono">{item.desc}</div>
                            </div>
                         </div>
                      </div>
                   ))}
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* 6. PREDICTIVE SCALING (NEW) */}
+      <section className="py-24 px-6 md:px-20 bg-onyx text-white border-t border-white/10 relative overflow-hidden">
+         <div className="absolute inset-0 bg-grid-pattern-dark opacity-10 pointer-events-none"></div>
+
+         <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex justify-between items-end mb-12">
+               <div>
+                  <h2 className="text-3xl font-bold tracking-tight mb-2">Predictive Scaling</h2>
+                  <p className="text-white/40 font-mono text-xs uppercase tracking-widest">/// AI-Driven Capacity Planning</p>
+               </div>
+               
+               <div className="flex gap-8 text-right">
+                  <div>
+                     <div className="text-xs font-mono text-white/40 uppercase mb-1">Q3 Allocation</div>
+                     <div className="text-green-400 font-bold font-mono">GUARANTEED</div>
+                  </div>
+                  <div>
+                     <div className="text-xs font-mono text-white/40 uppercase mb-1">Burst Cap</div>
+                     <div className="text-cobalt font-bold font-mono">+40%</div>
+                  </div>
+               </div>
+            </div>
+
+            {/* FORECAST GRAPH */}
+            <div className="bg-white/5 border border-white/10 rounded-xl p-8 md:p-12 relative overflow-hidden">
+               {/* Graph Area */}
+               <div className="flex items-end justify-between h-64 gap-4 relative z-10">
+                  {['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'].map((mo, i) => {
+                     const demand = 40 + Math.random() * 40;
+                     const capacity = demand + 15;
+                     
+                     return (
+                        <div key={i} className="w-full flex flex-col justify-end gap-1 group relative">
+                           {/* Tooltip */}
+                           <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white text-onyx text-xs font-mono py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none">
+                              DEMAND: {Math.floor(demand)}K
+                           </div>
+
+                           {/* Capacity Ghost Bar */}
+                           <div className="w-full bg-white/5 rounded-sm relative overflow-hidden" style={{ height: `${capacity}%` }}>
+                              <div className="absolute top-0 w-full h-px bg-white/20 border-t border-dashed border-white/40"></div>
+                           </div>
+                           
+                           {/* Demand Fill Bar */}
+                           <motion.div 
+                              initial={{ height: 0 }}
+                              whileInView={{ height: `${demand}%` }}
+                              transition={{ duration: 1, delay: i * 0.1 }}
+                              className="absolute bottom-0 w-full bg-cobalt rounded-sm shadow-[0_0_15px_rgba(0,71,171,0.4)] group-hover:bg-blue-400 transition-colors"
+                           >
+                           </motion.div>
+                           
+                           <div className="text-center mt-2 text-[10px] font-mono text-white/30">{mo}</div>
+                        </div>
+                     )
+                  })}
+               </div>
+               
+               {/* Legend */}
+               <div className="absolute top-6 right-6 flex gap-4">
+                  <div className="flex items-center gap-2">
+                     <div className="w-2 h-2 bg-cobalt rounded-full"></div>
+                     <span className="text-[10px] font-mono text-white/50">PROJECTED DEMAND</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                     <div className="w-2 h-2 bg-white/20 border border-dashed border-white/40 rounded-full"></div>
+                     <span className="text-[10px] font-mono text-white/50">AVAILABLE CAP</span>
+                  </div>
                </div>
             </div>
          </div>
