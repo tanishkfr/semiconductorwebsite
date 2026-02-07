@@ -32,9 +32,13 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
                   The world's first 14 Ångström process node. Fabricated for the post-silicon era with directed self-assembly.
                </p>
                
-               <button onClick={() => setPage('specs')} className="group flex items-center gap-4 px-8 py-4 bg-onyx text-white rounded-full font-bold hover:bg-cobalt transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1">
+               {/* REFINED CTA BUTTON: Glassmorphic Outline */}
+               <button 
+                  onClick={() => setPage('specs')} 
+                  className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold border border-onyx/10 bg-white/5 backdrop-blur-sm text-onyx transition-all duration-300 hover:bg-cobalt hover:border-transparent hover:text-white hover:shadow-[0_0_20px_rgba(0,71,171,0.4)]"
+               >
                   Technical Data
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform"/>
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300"/>
                </button>
             </div>
          </div>

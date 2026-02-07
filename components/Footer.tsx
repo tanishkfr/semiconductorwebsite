@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Twitter, Linkedin, Github, Hexagon, Activity, Radio, Lock, Zap, AlertCircle, X, Terminal } from 'lucide-react';
+import { Twitter, Linkedin, Github, Lock, X, ShieldAlert } from 'lucide-react';
 
-// INTERNAL COMPONENT: System Notification Popup
+// 1. DEFINE LEGAL DATA
+const LEGAL_DOCS: Record<string, string> = {
+  'Privacy Policy': "All biometric and usage data is hashed locally using SHA-256 before transmission to AXON secure vaults. We prioritize user anonymity and do not sell data to third parties.",
+  'Terms of Service': "By accessing AXON systems, user agrees to non-disclosure of 1.4nm architecture details. Unauthorized reproduction of lithography patterns is strictly prohibited.",
+  'Export Control': "Technology restricted under International Traffic in Arms Regulations (ITAR). Access from non-allied nations is strictly prohibited without State Dept authorization.",
+  'Supply Chain Ethics': "100% trace on raw silicon ingestion. All tantalum and tungsten sources utilize blockchain verification to ensure conflict-free origin."
+};
+
+// INTERNAL COMPONENT: System Notification Popup (Kept as is for other links)
 const SystemNotification = ({ message, onClose }: { message: string; onClose: () => void }) => {
   return (
     <motion.div
@@ -12,14 +20,11 @@ const SystemNotification = ({ message, onClose }: { message: string; onClose: ()
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
       className="fixed bottom-6 right-6 z-[9999] max-w-sm w-full bg-onyx/95 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden"
     >
-      {/* Top Warning Stripe */}
       <div className="h-1 w-full bg-gradient-to-r from-red-500 via-red-600 to-red-500"></div>
-      
       <div className="p-5 flex items-start gap-4">
         <div className="p-3 bg-red-500/10 rounded-lg shrink-0 border border-red-500/20">
           <Lock className="w-5 h-5 text-red-500" />
         </div>
-        
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start">
              <h4 className="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-2 flex items-center gap-2">
@@ -31,7 +36,6 @@ const SystemNotification = ({ message, onClose }: { message: string; onClose: ()
             {message}
           </p>
         </div>
-
         <button 
           onClick={onClose}
           className="group p-1 hover:bg-white/10 rounded-md transition-colors text-white/20 hover:text-white"
@@ -39,8 +43,6 @@ const SystemNotification = ({ message, onClose }: { message: string; onClose: ()
           <X size={14} className="group-hover:scale-110 transition-transform" />
         </button>
       </div>
-
-      {/* Timer Bar */}
       <motion.div 
         initial={{ width: "100%" }}
         animate={{ width: "0%" }}
@@ -51,10 +53,59 @@ const SystemNotification = ({ message, onClose }: { message: string; onClose: ()
   );
 };
 
+// INTERNAL COMPONENT: Simple Legal Modal (Minimalist)
+const SimpleLegalModal = ({ title, content, onClose }: { title: string, content: string, onClose: () => void }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-6"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-xl bg-onyx/95 border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+      >
+        <div className="flex justify-between items-center p-6 border-b border-white/10">
+            <div className="flex items-center gap-3">
+                <ShieldAlert className="text-white/60" size={20} />
+                <h2 className="text-xl font-bold text-white tracking-tight">{title}</h2>
+            </div>
+            <button 
+                onClick={onClose} 
+                className="p-2 rounded-full hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+            >
+                <X size={20} />
+            </button>
+        </div>
+        <div className="p-8">
+            <p className="text-white/80 leading-relaxed text-base font-sans">
+                {content}
+            </p>
+        </div>
+        <div className="px-6 py-4 bg-white/5 border-t border-white/10 flex justify-end">
+            <button 
+                onClick={onClose}
+                className="text-xs font-bold text-white/60 hover:text-white uppercase tracking-wider transition-colors"
+            >
+                Close
+            </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const Footer: React.FC = () => {
   const [notification, setNotification] = useState<string | null>(null);
+  const [activeLegalDoc, setActiveLegalDoc] = useState<{ title: string; content: string } | null>(null);
 
-  // Auto-dismiss notification
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => setNotification(null), 3000);
@@ -62,8 +113,11 @@ const Footer: React.FC = () => {
     }
   }, [notification]);
 
-  const handleLinkClick = (name: string) => {
-    // Convert readable name to system module ID (e.g., "About Foundry" -> "ABOUT_FOUNDRY")
+  const handleLinkClick = (name: string, category?: string) => {
+    if (category === 'Legal' && LEGAL_DOCS[name]) {
+       setActiveLegalDoc({ title: name, content: LEGAL_DOCS[name] });
+       return;
+    }
     const moduleId = name.toUpperCase().replace(/\s+/g, '_').replace(/[^A-Z0-9_]/g, '');
     setNotification(`ACCESS_DENIED: MODULE "${moduleId}" UNDER_CONSTRUCTION`);
   };
@@ -71,7 +125,6 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-onyx text-white pt-32 pb-6 relative overflow-hidden border-t border-white/10">
       
-      {/* NOTIFICATION LAYER */}
       <AnimatePresence>
          {notification && (
             <SystemNotification 
@@ -79,16 +132,21 @@ const Footer: React.FC = () => {
                onClose={() => setNotification(null)} 
             />
          )}
+         {activeLegalDoc && (
+            <SimpleLegalModal 
+               title={activeLegalDoc.title}
+               content={activeLegalDoc.content}
+               onClose={() => setActiveLegalDoc(null)}
+            />
+         )}
       </AnimatePresence>
 
-      {/* 1. MASSIVE WATERMARK */}
       <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none opacity-[0.03]">
          <h1 className="text-[30vw] font-bold leading-none tracking-tighter">AXON</h1>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        {/* 2. NEWSLETTER & HEADLINE */}
         <div className="flex flex-col lg:flex-row justify-between items-end mb-24 pb-12 border-b border-white/10">
            <div className="mb-12 lg:mb-0">
               <div className="flex items-center gap-2 mb-4">
@@ -119,17 +177,14 @@ const Footer: React.FC = () => {
            </div>
         </div>
 
-        {/* 3. 4-COLUMN GRID */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-32">
-           
-           {/* Column 1: Technology */}
            <div>
               <h4 className="font-mono text-xs font-bold text-white/40 uppercase tracking-widest mb-8">Technology</h4>
               <ul className="space-y-4">
                  {['Logic Nodes (A-14)', 'Advanced Packaging', 'Silicon Photonics', 'Memory Stacks (HBM)'].map((item) => (
                     <li key={item}>
                        <button 
-                         onClick={() => handleLinkClick(item)}
+                         onClick={() => handleLinkClick(item, 'Technology')}
                          className="text-left text-sm font-medium text-white/70 hover:text-cobalt cursor-pointer transition-colors focus:outline-none group flex items-center gap-2"
                        >
                          <span className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all text-cobalt text-[10px]">►</span>
@@ -140,14 +195,13 @@ const Footer: React.FC = () => {
               </ul>
            </div>
 
-           {/* Column 2: Company */}
            <div>
               <h4 className="font-mono text-xs font-bold text-white/40 uppercase tracking-widest mb-8">Company</h4>
               <ul className="space-y-4">
                  {['About Foundry', 'Leadership', 'Careers', 'Investor Relations'].map((item) => (
                     <li key={item}>
                        <button 
-                         onClick={() => handleLinkClick(item)}
+                         onClick={() => handleLinkClick(item, 'Company')}
                          className="text-left text-sm font-medium text-white/70 hover:text-cobalt cursor-pointer transition-colors focus:outline-none group flex items-center gap-2"
                        >
                          <span className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all text-cobalt text-[10px]">►</span>
@@ -158,14 +212,13 @@ const Footer: React.FC = () => {
               </ul>
            </div>
 
-           {/* Column 3: Resources */}
            <div>
               <h4 className="font-mono text-xs font-bold text-white/40 uppercase tracking-widest mb-8">Resources</h4>
               <ul className="space-y-4">
                  {['Documentation', 'PDK Access', 'Whitepapers', 'API Status'].map((item) => (
                     <li key={item}>
                        <button 
-                         onClick={() => handleLinkClick(item)}
+                         onClick={() => handleLinkClick(item, 'Resources')}
                          className="text-left text-sm font-medium text-white/70 hover:text-cobalt cursor-pointer transition-colors focus:outline-none group flex items-center gap-2"
                        >
                          <span className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all text-cobalt text-[10px]">►</span>
@@ -176,14 +229,13 @@ const Footer: React.FC = () => {
               </ul>
            </div>
 
-           {/* Column 4: Legal */}
            <div>
               <h4 className="font-mono text-xs font-bold text-white/40 uppercase tracking-widest mb-8">Legal</h4>
               <ul className="space-y-4">
                  {['Privacy Policy', 'Terms of Service', 'Export Control', 'Supply Chain Ethics'].map((item) => (
                     <li key={item}>
                        <button 
-                         onClick={() => handleLinkClick(item)}
+                         onClick={() => handleLinkClick(item, 'Legal')}
                          className="text-left text-sm font-medium text-white/70 hover:text-cobalt cursor-pointer transition-colors focus:outline-none group flex items-center gap-2"
                        >
                          <span className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all text-cobalt text-[10px]">►</span>
@@ -196,7 +248,6 @@ const Footer: React.FC = () => {
 
         </div>
 
-        {/* 4. BOTTOM BAR: SYSTEM STATUS */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
            
            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/5">
