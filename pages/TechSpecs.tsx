@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SPECS, FEATURES } from '../constants';
-import { Download, Cpu, Thermometer, Zap, Activity, BarChart3, TrendingUp, ShieldCheck, Cable, CheckCircle2 } from 'lucide-react';
+import { Download, Cpu, Thermometer, Zap, Activity, BarChart3, TrendingUp, ShieldCheck, Cable, CheckCircle2, Box, ArrowRight, Layers } from 'lucide-react';
 
 const TechSpecs: React.FC = () => {
   const [viewMode, setViewMode] = useState<'logic' | 'thermal' | 'power' | 'signal'>('logic');
@@ -219,6 +219,108 @@ const TechSpecs: React.FC = () => {
                   </div>
                </div>
             </div>
+         </div>
+
+         {/* 4. REFERENCE DESIGN BLUEPRINT (NEW SECTION) */}
+         <div className="mb-32">
+             <div className="flex items-center gap-3 mb-10">
+                 <div className="p-2 bg-cobalt/10 rounded-lg"><Box className="text-cobalt" size={24}/></div>
+                 <div>
+                    <h2 className="text-2xl font-bold text-onyx">System Integration</h2>
+                    <p className="text-xs font-mono text-onyx/40 uppercase tracking-widest">Reference Design v1.0</p>
+                 </div>
+             </div>
+
+             <div className="w-full bg-[#F0F4F8] rounded-xl border border-blue-200 p-8 md:p-16 relative overflow-hidden">
+                 {/* Blueprint Grid */}
+                 <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "linear-gradient(to right, #3B82F6 1px, transparent 1px), linear-gradient(to bottom, #3B82F6 1px, transparent 1px)", backgroundSize: "20px 20px" }}></div>
+
+                 <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-16 md:gap-8">
+                     
+                     {/* Node 1: HOST CPU */}
+                     <div className="flex flex-col items-center">
+                         <div className="w-40 h-32 bg-white border-2 border-blue-900 shadow-xl flex items-center justify-center flex-col relative z-20">
+                             <Cpu size={32} className="text-blue-900 mb-2"/>
+                             <span className="font-mono font-bold text-blue-900">HOST CPU</span>
+                             <span className="text-[10px] font-mono text-blue-500">x86 / ARM</span>
+                             {/* Connector Dots */}
+                             <div className="absolute top-1/2 -right-1 w-2 h-2 bg-blue-900 rounded-full translate-x-1/2"></div>
+                         </div>
+                     </div>
+
+                     {/* DATA FLOW LINES (SVG) */}
+                     <div className="hidden md:flex flex-1 h-32 items-center justify-center relative">
+                         <svg className="absolute inset-0 w-full h-full overflow-visible">
+                            {/* Line 1 */}
+                            <motion.path 
+                               d="M0,64 L50,64 L50,64 L100,64" 
+                               vectorEffect="non-scaling-stroke"
+                               stroke="#0047AB" 
+                               strokeWidth="2" 
+                               strokeDasharray="8 4"
+                               fill="none"
+                               animate={{ strokeDashoffset: [0, -24] }}
+                               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                            />
+                            {/* Data Packet */}
+                            <motion.circle cx="0" cy="64" r="4" fill="#007AFF">
+                                <animateMotion dur="2s" repeatCount="indefinite" path="M0,64 L300,64" />
+                            </motion.circle>
+                         </svg>
+                         <div className="bg-white/80 px-2 py-1 border border-blue-200 text-[10px] font-mono text-blue-600 rounded">
+                             PCIe 6.0 x16
+                         </div>
+                     </div>
+
+                     {/* Node 2: AXON ACCELERATOR */}
+                     <div className="flex flex-col items-center">
+                         <div className="w-48 h-48 bg-blue-900 border-2 border-blue-600 shadow-2xl flex items-center justify-center flex-col relative z-20 rounded-xl">
+                             <div className="absolute inset-2 border border-blue-700 border-dashed rounded-lg"></div>
+                             <Activity size={48} className="text-white mb-4 animate-pulse"/>
+                             <span className="font-mono font-bold text-white text-lg">AXON NPU</span>
+                             <span className="text-[10px] font-mono text-blue-300 mt-1">A-1400 CORE</span>
+                             
+                             {/* Connectors */}
+                             <div className="absolute top-1/2 -left-1 w-2 h-2 bg-white rounded-full -translate-x-1/2"></div>
+                             <div className="absolute top-1/2 -right-1 w-2 h-2 bg-white rounded-full translate-x-1/2"></div>
+                         </div>
+                     </div>
+
+                     {/* DATA FLOW LINES (SVG) */}
+                     <div className="hidden md:flex flex-1 h-32 items-center justify-center relative">
+                         <svg className="absolute inset-0 w-full h-full overflow-visible">
+                            <motion.path 
+                               d="M0,64 L100,64" 
+                               vectorEffect="non-scaling-stroke"
+                               stroke="#0047AB" 
+                               strokeWidth="2" 
+                               strokeDasharray="8 4"
+                               fill="none"
+                               animate={{ strokeDashoffset: [0, -24] }}
+                               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                            />
+                         </svg>
+                         <div className="bg-white/80 px-2 py-1 border border-blue-200 text-[10px] font-mono text-blue-600 rounded">
+                             HBI Interface
+                         </div>
+                     </div>
+
+                     {/* Node 3: HBM POOL */}
+                     <div className="flex flex-col items-center">
+                         <div className="w-32 h-40 bg-white border-2 border-blue-900 shadow-xl flex items-center justify-center flex-col relative z-20">
+                             <Layers size={32} className="text-blue-900 mb-2"/>
+                             <span className="font-mono font-bold text-blue-900">HBM3e</span>
+                             <span className="text-[10px] font-mono text-blue-500">192GB Pool</span>
+                             {/* Connector */}
+                             <div className="absolute top-1/2 -left-1 w-2 h-2 bg-blue-900 rounded-full -translate-x-1/2"></div>
+                             {/* Stack Effect */}
+                             <div className="absolute top-[-5px] left-[-5px] w-full h-full border border-blue-200 bg-white -z-10"></div>
+                             <div className="absolute top-[-10px] left-[-10px] w-full h-full border border-blue-200 bg-white -z-20"></div>
+                         </div>
+                     </div>
+
+                 </div>
+             </div>
          </div>
 
          {/* SPECS GRID (Existing) */}

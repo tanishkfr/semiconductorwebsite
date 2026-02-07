@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Award, TrendingUp, Users, Database, Zap, Cpu, Search, CheckCircle2 } from 'lucide-react';
+import { Globe, Award, TrendingUp, Users, Database, Zap, Cpu, Search, CheckCircle2, FileBadge } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
@@ -118,7 +118,7 @@ const About: React.FC = () => {
        </div>
 
        {/* 4. R&D PIPELINE - PRECISION GAUGES */}
-       <div className="max-w-7xl mx-auto px-6 py-12 mb-20">
+       <div className="max-w-7xl mx-auto px-6 py-12 mb-12">
           <div className="bg-onyx text-white rounded-2xl p-8 md:p-16 border border-white/10 relative overflow-hidden">
              <div className="absolute top-0 right-0 p-8 opacity-10">
                 <Search size={120} strokeWidth={1} />
@@ -170,6 +170,36 @@ const About: React.FC = () => {
                    ))}
                 </div>
              </div>
+          </div>
+       </div>
+
+       {/* 5. STANDARDS & COMPLIANCE TICKER (NEW SECTION) */}
+       <div className="w-full bg-white border-y border-onyx/10 py-6 relative overflow-hidden">
+          <div className="flex w-full items-center">
+             <div className="absolute left-0 z-10 h-full w-20 bg-gradient-to-r from-surface to-transparent"></div>
+             
+             <motion.div 
+               className="flex whitespace-nowrap gap-12"
+               animate={{ x: [0, -1000] }}
+               transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+             >
+                {/* Repeat twice for seamless loop */}
+                {[...Array(2)].map((_, i) => (
+                   <React.Fragment key={i}>
+                      {[
+                         "ISO 9001:2015 CERTIFIED", "IEEE 802.3ck COMPLIANT", "RoHS DIRECTIVE 2011/65/EU", 
+                         "IATF 16949 AUTOMOTIVE", "ANSI/ESD S20.20", "EUV SAFE HARBOR", "SOC 2 TYPE II"
+                      ].map((cert, j) => (
+                         <div key={j} className="flex items-center gap-3 opacity-50 hover:opacity-100 transition-opacity">
+                            <FileBadge size={16} className="text-cobalt" />
+                            <span className="font-mono text-sm font-bold text-onyx tracking-wider">{cert}</span>
+                         </div>
+                      ))}
+                   </React.Fragment>
+                ))}
+             </motion.div>
+
+             <div className="absolute right-0 z-10 h-full w-20 bg-gradient-to-l from-surface to-transparent"></div>
           </div>
        </div>
 

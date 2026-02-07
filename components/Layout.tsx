@@ -1,7 +1,7 @@
 import React, { ReactNode, useLayoutEffect, useRef } from 'react';
 import CustomCursor from './CustomCursor';
 import Footer from './Footer';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,6 +11,16 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, activePage, setPage }) => {
   const mainRef = useRef<HTMLElement>(null);
+  
+  // Track scroll progress relative to the main scrollable container
+  const { scrollYProgress } = useScroll({ container: mainRef });
+  
+  // Smooth out the progress bar animation
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useLayoutEffect(() => {
     // 1. Reset the scrollable container
@@ -25,6 +35,12 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage, setPage }) => {
     <div className="min-h-screen bg-surface text-onyx font-sans overflow-hidden relative selection:bg-cobalt/20 selection:text-cobalt">
       <CustomCursor />
       
+      {/* READING PROGRESS BAR */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[3px] bg-cobalt origin-left z-[9999]"
+        style={{ scaleX }}
+      />
+
       {/* GLOBAL NOISE TEXTURE - TACTILE FEEL */}
       <div 
         className="fixed inset-0 z-[9000] opacity-[0.08] pointer-events-none mix-blend-overlay"

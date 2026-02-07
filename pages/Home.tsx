@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck, TrendingUp, AlertCircle, Info } from 'lucide-react';
+import { ArrowRight, Cpu, Activity, Zap, Layers, Network, Server, ShieldCheck, Box, Crosshair, BarChart3, Radio, Timer, Factory, Package, Truck, TrendingUp, AlertCircle, Info, DollarSign, PieChart } from 'lucide-react';
 
 interface HomeProps {
   setPage: (page: string) => void;
@@ -309,6 +309,96 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
                   ))}
                </div>
             </div>
+         </div>
+      </section>
+
+      {/* 6. INVESTOR DATA / FINANCIAL PERFORMANCE */}
+      <section className="py-24 px-6 md:px-20 bg-surface border-t border-onyx/10 relative overflow-hidden">
+         {/* Subtle Background Graphic */}
+         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-cobalt/5 to-transparent pointer-events-none"></div>
+
+         <div className="max-w-7xl mx-auto relative z-10">
+             <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+                 <div>
+                    <div className="flex items-center gap-2 mb-2">
+                       <DollarSign className="text-cobalt" size={16} />
+                       <span className="text-xs font-mono text-onyx/40 uppercase tracking-widest font-bold">Q4 FY25 Report</span>
+                    </div>
+                    <h2 className="text-3xl font-bold text-onyx">Financial Performance</h2>
+                 </div>
+                 <div className="mt-4 md:mt-0 px-4 py-2 bg-white rounded-full border border-onyx/5 text-xs font-mono text-onyx/60 flex items-center gap-2 shadow-sm">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    NYSE: AXON
+                 </div>
+             </div>
+
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                 {/* CARD 1: REVENUE */}
+                 <div className="bg-white/60 backdrop-blur-md border border-white/80 p-8 rounded-2xl shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+                     <div className="flex justify-between items-start mb-6">
+                         <div>
+                            <div className="text-sm font-mono text-onyx/50 uppercase tracking-wider mb-1">Q4 Revenue</div>
+                            <div className="text-4xl font-bold text-onyx tracking-tight">$12.4B</div>
+                         </div>
+                         <div className="p-2 bg-green-500/10 rounded-lg text-green-600">
+                             <TrendingUp size={24} />
+                         </div>
+                     </div>
+                     <div className="relative h-16 w-full">
+                         {/* Simple SVG Trendline */}
+                         <svg className="w-full h-full overflow-visible" viewBox="0 0 100 50" preserveAspectRatio="none">
+                             <path d="M0,50 C20,45 40,30 60,35 S80,10 100,5" fill="none" stroke="#10B981" strokeWidth="3" strokeLinecap="round" />
+                             <path d="M0,50 C20,45 40,30 60,35 S80,10 100,5 L100,50 L0,50 Z" fill="url(#gradGreen)" opacity="0.2" />
+                             <defs>
+                                <linearGradient id="gradGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+                                   <stop offset="0%" stopColor="#10B981" />
+                                   <stop offset="100%" stopColor="transparent" />
+                                </linearGradient>
+                             </defs>
+                         </svg>
+                     </div>
+                 </div>
+
+                 {/* CARD 2: R&D INVESTMENT */}
+                 <div className="bg-white/60 backdrop-blur-md border border-white/80 p-8 rounded-2xl shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+                     <div className="flex justify-between items-start mb-6">
+                         <div>
+                            <div className="text-sm font-mono text-onyx/50 uppercase tracking-wider mb-1">R&D Investment</div>
+                            <div className="text-4xl font-bold text-onyx tracking-tight">18%</div>
+                         </div>
+                         <div className="p-2 bg-cobalt/10 rounded-lg text-cobalt">
+                             <PieChart size={24} />
+                         </div>
+                     </div>
+                     <div className="w-full bg-onyx/5 h-2 rounded-full overflow-hidden mt-8">
+                         <div className="h-full bg-cobalt w-[18%] relative">
+                            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-white shadow-sm"></div>
+                         </div>
+                     </div>
+                     <p className="mt-4 text-xs font-mono text-onyx/40">Targeting 22% by FY26 for Sub-Angstrom dev.</p>
+                 </div>
+
+                 {/* CARD 3: YOY GROWTH */}
+                 <div className="bg-white/60 backdrop-blur-md border border-white/80 p-8 rounded-2xl shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+                     <div className="flex justify-between items-start mb-6">
+                         <div>
+                            <div className="text-sm font-mono text-onyx/50 uppercase tracking-wider mb-1">YoY Growth</div>
+                            <div className="text-4xl font-bold text-onyx tracking-tight">+24%</div>
+                         </div>
+                         <div className="p-2 bg-green-500/10 rounded-lg text-green-600">
+                             <Activity size={24} />
+                         </div>
+                     </div>
+                     <div className="relative h-16 w-full">
+                         {/* Bar Chart Representation */}
+                         <div className="flex items-end justify-between h-full gap-2">
+                             {[30, 45, 35, 60, 50, 80, 70, 90, 100].map((h, i) => (
+                                 <div key={i} className="w-full bg-green-500 rounded-t-sm opacity-20 group-hover:opacity-100 transition-opacity" style={{ height: `${h}%` }}></div>
+                             ))}
+                         </div>
+                     </div>
+                 </div>
+             </div>
          </div>
       </section>
 
